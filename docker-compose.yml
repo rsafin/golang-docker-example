@@ -2,5 +2,7 @@ version: "3.8"
 services:
   app:
     build: .
+    working_dir: /app
+    command: /usr/go/bin/go run cmd/main.go
     volumes:
       - ./:/app

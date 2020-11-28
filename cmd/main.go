@@ -1,9 +1,14 @@
 package main
 
 import (
+	"exchangerate/internal/exchangerate"
 	"fmt"
 )
 
 func main() {
-	fmt.Printf("Hello world!\n")
+	p := new(exchangerate.Profinance)
+
+	rate, _ := p.GetRate("")
+
+	fmt.Printf("%v\n", rate)
 }
