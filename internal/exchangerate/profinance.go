@@ -10,9 +10,16 @@ import (
 const url = "https://www.profinance.ru/data/cbr-json.php?date=%s"
 
 type Rate struct {
-	Quotes interface{}
-	QuotesNum interface{}
+	Quotes map[string]map[string]interface{}
+	QuotesNum map[string]map[string]interface{}
 	Date string
+}
+
+type Cur []struct {
+	NumCode string
+	Nominal string
+	Name    string
+	Value   float64
 }
 
 type Profinance struct {
@@ -40,9 +47,7 @@ func (p *Profinance) GetRate(date string) (float32, error) {
 		return 0, err
 	}
 
-	quotes := rate.Quotes.(map[string]interface{})
-	usd := quotes["USD"].(map[string]interface{})
-	value := usd["value"]
+	value := rate.Quotes["USD"]["value"]
 	fmt.Printf("%+v\n", value)
 
 	return 0, nil
