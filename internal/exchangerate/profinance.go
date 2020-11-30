@@ -2,7 +2,6 @@ package exchangerate
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 )
@@ -11,22 +10,15 @@ const url = "https://www.profinance.ru/data/cbr-json.php?date=%s"
 
 type Rate struct {
 	Quotes map[string]map[string]interface{}
-	QuotesNum map[string]map[string]interface{}
+	QuotesNum map[string]map[int]interface{}
 	Date string
-}
-
-type Cur []struct {
-	NumCode string
-	Nominal string
-	Name    string
-	Value   float64
 }
 
 type Profinance struct {
 
 }
 
-func (p *Profinance) GetRate(date string) (float32, error) {
+func (p *Profinance) GetRate(date string) (float64, error) {
 	resp, err := http.Get(url)
 
 	if err != nil {
@@ -47,8 +39,7 @@ func (p *Profinance) GetRate(date string) (float32, error) {
 		return 0, err
 	}
 
-	value := rate.Quotes["USD"]["value"]
-	fmt.Printf("%+v\n", value)
+	value := rate.Quotes["USD"]["value"].(float64)
 
-	return 0, nil
+	return value, nil
 }
